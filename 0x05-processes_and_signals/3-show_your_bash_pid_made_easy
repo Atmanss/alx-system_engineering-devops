@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-# The script displays the PID of processes whose name contain 'bash'
-pgrep -l bash
+#print bash pid to stdout
+# Alternative is 'pgrep -l bash',
+# But lets do hard thigs 
+for proc in $(pgrep bash); do
+    echo "$proc bash";
+done

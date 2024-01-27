@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# A bash script that stops the 7-highlander process
-# Requirement: No use of 'kill' or 'killall'
+#stop the "4-to_infinity_and_beyond" process
+#without using 'kill' or 'killall' commands
 
-pkill -f 7-highlander
+pkill -HUP -f 7-highlander
