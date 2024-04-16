@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
-# setup a backup of all the databases
+# Generates a MySQL dump and creates a compressed archive out of it
 
-day=$(date +"%d")
-month=$(date +"%m")
-year=$(date +"%Y")
-fule_file_name="$day-$month-$year.tar.gz"
+backup_file="backup.sql"
+tar_file="$(date '+%d-%m-%Y').tar.gz"
 
-mysqldump --all-databases -u root --password="$1" > backup.sql
-tar -czvf "$fule_file_name" backup.sql
+if [ $# -ne 1 ]; then
+        echo "Usage: $0 <MYSQL database>"
+        exit 1
+elif [ -e "$backup_file" ]; then
+        echo "Backup file '$backup_file' found. Updating..."
+        mysqldump -u root -p"$1" --all-databases > backup.sql
+        tar -czvf "$(date '+%d-%m-%Y').tar.gz" backup.sql
+        echo "Backup updated successfully."
+else
+    echo "Backup file '$backup_file' not found. Creating a new backup..."
+    mysqldump -u root -p"$1" --all-databases > "$backup_file"
+    tar -czvf "$tar_file" "$backup_file"
+    echo "Backup created successfully."
+fi
